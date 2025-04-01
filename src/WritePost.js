@@ -1,11 +1,19 @@
-import { useOutletContext } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { onSave } from "./postListSlice";
+import { useNavigate } from "react-router-dom";
+
 export default function WritePost() {
-    const {newPostList} = useOutletContext();
+const dispatch = useDispatch();
+const navigate = useNavigate();
 return (
     <>
     <form onSubmit={(e)=>{
         e.preventDefault();
-        newPostList(e.target.title.value, e.target.body.value, e.target.writer.value);
+        const title = e.target.title.value;
+        const body = e.target.body.value;
+        const writer = e.target.writer.value;
+        dispatch(onSave({title, body, writer})); // {type:"postList/onSave", payload:{title, body, writer}};
+        navigate("/");
     }}>
         <input type='text' name="title"></input><hr></hr>
         <textarea name="body"></textarea><hr></hr>
